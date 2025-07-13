@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <h2>Staff Login</h2>
+
+      <form id="loginForm">
+        <input type="text" id="staff_id" placeholder="Enter your Staff ID" required />
+        <button type="submit">Login</button>
+      </form>
+
+      <div id="loginResult"></div>
+
+      <p class="register-link">
+        Don't have an account? <a href="register.html">Register here</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const staff_id = document.getElementById("staff_id").value;
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ staff_id })
+        });
+
+        const data = await res.json();
+        const resultDiv = document.getElementById("loginResult");
+
+        if (data.loggedIn) {
+          resultDiv.innerHTML = `<p class="success">Welcome ${data.name} (${data.department})</p>`;
+          setTimeout(() => {
+            window.location.href = "/verify.html";
+          }, 1000);
+        } else {
+          resultDiv.innerHTML = `<p class="error">${data.message}</p>`;
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        resultDiv.innerHTML = `<p class="error">An error occurred. Please try again.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

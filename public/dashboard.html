@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <div class="logo">
+        <i class="fas fa-id-card-alt"></i>
+      </div>
+      <div class="brand-name">Staff Verification</div>
+    </div>
+    <div class="user-info">
+        <div class="user-avatar">
+          <!-- Replace with your image path -->
+          <img src="bussiness-man.png" alt="User Profile">
+        </div>
+      </div>
+  </header>
+  
+  <main class="main-container">
+    <section class="welcome-section">
+      <h1>Welcome to Staff Verification System</h1>
+      <p>Manage your staff verification process efficiently. Verify identities, register new staff members, and maintain up-to-date records with our secure platform.</p>
+    </section>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Total Staff</h3>
+        <div class="value">-</div>
+      </div>
+      <div class="stat-card">
+        <h3>Verified</h3>
+        <div class="value">-</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pending</h3>
+        <div class="value">-</div>
+      </div>
+    </div>
+    
+    <div class="actions-container">
+      <div class="action-card verify">
+        <div class="action-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <h2>Verify Your ID</h2>
+        <p>Complete your identity verification process to access all staff privileges and features.</p>
+        <a href="/verify.html" class="btn verify">Verify Now</a>
+      </div>
+      
+      <div class="action-card register">
+        <div class="action-icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h2>Register New Staff</h2>
+        <p>Add new staff members to the system and initiate their verification process.</p>
+        <a href="/register.html" class="btn register">Register</a>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="footer">
+    <p>&copy; 2023 Staff Verification System. All rights reserved.</p>
+  </footer>
+</body>
+</html>

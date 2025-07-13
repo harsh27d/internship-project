@@ -1,0 +1,118 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('pexels.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .register-box {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    color: #fff;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+  }
+  
+  .register-box h2 {
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
+  
+  .register-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: #1e1e1e;
+    color: #fff;
+  }
+  
+  .register-box input[type="file"] {
+    color: #ccc;
+  }
+  
+  .register-box button {
+    width: 100%;
+    padding: 12px;
+    background: #00aaff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .register-box button:hover {
+    background: #007acc;
+  }
+  
+  .login-link {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .login-link a {
+    color: #00aaff;
+    text-decoration: none;
+  }
+  
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+  
+  #registerResult {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    margin: 10% auto;
+    width: 300px;
+    text-align: center;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  #closeModal {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  #qrcode {
+    margin: 20px 0;
+  }
+
+  #okBtn {
+    padding: 8px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Staff ID Verification</title>
+  <link rel="stylesheet" href="verify.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    /* QR Scanner Modal */
+    #qrScannerModal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scanner-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      position: relative;
+    }
+
+    #closeScanner {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      color: red;
+      cursor: pointer;
+    }
+
+    #reader {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    #scanQrBtn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-shield-alt"></i>
+      <span>Staff Verification System</span>
+    </div>
+    <nav class="nav-links">
+      <a href="dashboard.html">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="verify-box">
+      <h1>Verify Staff ID</h1>
+
+      <!-- Manual Entry -->
+      <form id="verifyForm">
+        <input type="text" id="verifyId" placeholder="Enter Staff ID" required />
+        <button type="submit">Verify</button>
+      </form>
+
+      <!-- OR Scan -->
+      <p style="margin: 15px 0;">OR</p>
+      <button id="scanQrBtn">📷 Scan QR Code</button>
+
+      <!-- Result -->
+      <div id="staffInfo" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- QR Scanner Modal -->
+  <div id="qrScannerModal">
+    <div class="scanner-box">
+      <span id="closeScanner">&times;</span>
+      <h3>Scan Your Staff QR Code</h3>
+      <div id="reader"></div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const verifyForm = document.getElementById("verifyForm");
+    const staffInfoDiv = document.getElementById("staffInfo");
+    const scanBtn = document.getElementById("scanQrBtn");
+    const qrModal = document.getElementById("qrScannerModal");
+    const closeScanner = document.getElementById("closeScanner");
+    let html5QrCode;
+
+    // Manual verification
+    verifyForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const staffId = document.getElementById("verifyId").value.trim();
+      if (staffId) verifyStaff(staffId);
+    });
+
+    // Reusable verification function
+    async function verifyStaff(staffId) {
+      try {
+        const response = await fetch('/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ staffId })
+        });
+
+        const data = await response.json();
+        if (data.verified) {
+          const staff = data.staff;
+          staffInfoDiv.innerHTML = `
+            <h3 class="success">✅ Verification Successful</h3>
+            <p><strong>Name:</strong> ${staff.name}</p>
+            <p><strong>Department:</strong> ${staff.department}</p>
+            <img src="/uploads/${staff.profile_pic}" width="150" alt="Profile Picture"
+              style="border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3);" />
+          `;
+        } else {
+          staffInfoDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+        }
+      } catch (error) {
+        console.error("Verification error:", error);
+        staffInfoDiv.innerHTML = `<p class="error">An error occurred while verifying.</p>`;
+      }
+    }
+
+    // Open QR scanner modal
+    scanBtn.onclick = () => {
+      qrModal.style.display = "flex";
+      html5QrCode = new Html5Qrcode("reader");
+
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 200 },
+        (decodedText) => {
+          console.log("📷 Raw QR scan:", decodedText);
+
+          html5QrCode.stop().then(() => {
+            qrModal.style.display = "none";
+
+            let cleanId = decodedText.trim();
+
+            // Try to parse JSON if QR contains object
+            try {
+              const parsed = JSON.parse(cleanId);
+              if (parsed.staffId) {
+                console.log("✅ Extracted staffId from JSON:", parsed.staffId);
+                cleanId = parsed.staffId;
+              }
+            } catch (e) {
+              console.log("ℹ️ Using plain text from QR:", cleanId);
+            }
+
+            verifyStaff(cleanId);
+          });
+        },
+        (errorMsg) => {
+          // Optional: console.warn("QR scan error:", errorMsg);
+        }
+      );
+    };
+
+    // Close scanner modal
+    closeScanner.onclick = () => {
+      if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+          qrModal.style.display = "none";
+        });
+      }
+    };
+  </script>
+</body>
+</html>
